@@ -1,10 +1,11 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setUserNmae } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
   name: '',
+  username: '',
   avatar: '',
   introduction: '',
   roles: []
@@ -19,6 +20,9 @@ const mutations = {
   },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_USERNAME: (state, username) => {
+    state.username = username
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -37,6 +41,8 @@ const actions = {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
+        commit('SET_USERNAME', username)
+        setUserNmae(username)
         resolve()
       }).catch(error => {
         reject(error)

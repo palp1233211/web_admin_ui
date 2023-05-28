@@ -39,3 +39,11 @@ export function updateArticle(data) {
     data
   })
 }
+
+export function labelTagList(type) {
+  return request({
+    url: '/vue-element-admin/article/labelTagList',
+    method: 'get',
+    params: { type }
+  })
+}
