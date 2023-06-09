@@ -22,21 +22,27 @@ service.interceptors.request.use(
     if (!config.data) {
       config.data = {} // 设置默认值为一个空对象
     }
+    // config.headers['Content-Type'] = 'multipart/form-data'
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
       // config.headers['X-Token'] = getToken()
       if (config.method === 'post') {
-        config.data['username'] = getUserNmae()
-        config.data['token'] = getToken()
+        if (config.data instanceof FormData) {
+          config.data.append('username', getUserNmae())
+          config.data.append('token', getToken())
+        }else{
+          config.data['username'] = getUserNmae()
+          config.data['token'] = getToken()
+        }
       } else {
         config.params['token'] = getToken()
         config.params['username'] = getUserNmae()
       }
     }
     // 序列化
-    if (config.method === 'post') {
+    if (config.method === 'post' && !config.data instanceof FormData) {
       config.data = qs.stringify(config.data)
     }
     return config

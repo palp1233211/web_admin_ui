@@ -68,8 +68,10 @@ export default {
     },
     handleAvatarSuccess(response, file, fileList) {
       this.fileList = fileList
-      const urls = fileList.map(element => element.response.data.src)
-      const url = urls.join(',')
+      const imageUrls = fileList.map((file) => {
+        return file.response.data.src.join(',');
+      });
+      const url = imageUrls.join(',')
       this.$emit('imgUrl', url)
     },
     handleError(err, file, fileList) {
@@ -81,18 +83,18 @@ export default {
     },
     customUploadMethod(file) {
       return new Promise((resolve, reject) => {
-        upload_img(file)
+        let formData = new FormData();
+        formData.append( 'files', file.file)
+        upload_img(formData)
           .then(response => {
             if (response.code === 200) {
               this.$message.success('上传成功')
               resolve(response) // 将响应数据作为resolve的参数返回
             } else {
-              this.$message.error('上传失败')
               reject(new Error('上传失败'))
             }
           })
           .catch(error => {
-            this.$message.error('上传失败')
             reject(error)
           })
       })

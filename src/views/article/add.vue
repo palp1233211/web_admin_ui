@@ -95,9 +95,9 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      const formRef = this.$refs[formName]
+      formRef.validate((valid) => {
         if (valid) {
-          console.log(this.ruleForm)
           createArticle(this.ruleForm)
             .then(response => {
               const { msg } = response
@@ -112,7 +112,7 @@ export default {
             })
         } else {
           console.log('error submit!!')
-          return false
+          formRef.$el.scrollIntoView()
         }
       })
     },
