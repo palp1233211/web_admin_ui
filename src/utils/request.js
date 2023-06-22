@@ -42,7 +42,7 @@ service.interceptors.request.use(
       }
     }
     // 序列化
-    if (config.method === 'post' && !config.data instanceof FormData) {
+    if (config.method === 'post' && !(config.data instanceof FormData)) {
       config.data = qs.stringify(config.data)
     }
     return config
